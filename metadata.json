@@ -1,0 +1,6 @@
+{
+  "name": "VerdaScan - Green Product Comparison & Eco-Impact Engine",
+  "description": "Rank sustainable products by verified eco-certifications and carbon footprint metrics. Compare lifecycle emissions, track personal and community carbon savings, and conquer green challenges.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
