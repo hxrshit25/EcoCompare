@@ -12,10 +12,24 @@ export const SearchModal: React.FC = () => {
     setSearchModalOpen, 
     products, 
     setSelectedProduct, 
-    setActiveView 
+    setActiveView,
+    setSelectedCategory,
+    setSearchQuery 
   } = useApp();
 
   const [query, setQuery] = useState('');
+
+  // Lock body scroll when search modal is open
+  useEffect(() => {
+    if (searchModalOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [searchModalOpen]);
 
   // Keyboard shortcut listener for Cmd+K / Ctrl+K & Escape
   useEffect(() => {
@@ -51,8 +65,18 @@ export const SearchModal: React.FC = () => {
     setSearchModalOpen(false);
   };
 
+  const handleCategorySelect = (cat: string) => {
+    setSelectedCategory(cat as any);
+    setSearchQuery('');
+    setActiveView('explore');
+    setSearchModalOpen(false);
+  };
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-xs">
+    <div 
+      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-black/60 backdrop-blur-xs"
+      onClick={() => setSearchModalOpen(false)}
+    >
       <div 
         className="w-full max-w-2xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
@@ -113,10 +137,8 @@ export const SearchModal: React.FC = () => {
                   {['Electronics', 'Clothing', 'Personal Care', 'Home & Kitchen', 'Food & Beverages', 'Stationery', 'Transportation', 'Packaging'].map((cat) => (
                     <button
                       key={cat}
-                      onClick={() => {
-                        setQuery(cat);
-                      }}
-                      className="p-2.5 rounded-xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200/60 dark:border-slate-800 text-left hover:border-emerald-500 font-medium text-gray-700 dark:text-gray-300"
+                      onClick={() => handleCategorySelect(cat)}
+                      className="p-2.5 rounded-xl bg-gray-50 dark:bg-slate-950/60 border border-gray-200/60 dark:border-slate-800 text-left hover:border-emerald-500 font-medium text-gray-700 dark:text-gray-300 transition-colors cursor-pointer"
                     >
                       {cat}
                     </button>

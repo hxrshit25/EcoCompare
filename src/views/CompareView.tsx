@@ -39,7 +39,8 @@ export const CompareView: React.FC = () => {
     setActiveView, 
     setSelectedProduct,
     isSaved,
-    toggleSaved
+    toggleSaved,
+    recordComparison
   } = useApp();
 
   const [priorities, setPriorities] = useState<PriorityWeights>({
@@ -75,6 +76,16 @@ export const CompareView: React.FC = () => {
   const recommendation = useMemo(() => {
     return generateSmartRecommendation(comparedProducts, priorities);
   }, [comparedProducts, priorities]);
+
+  // Record comparison session into persistent history
+  React.useEffect(() => {
+    if (comparedProducts.length >= 2 && recommendation?.recommended) {
+      recordComparison(
+        comparedProducts.map(p => p.id),
+        recommendation.recommended.id
+      );
+    }
+  }, [comparedProducts, recommendation, recordComparison]);
 
   // Metric status evaluations (🟢 Best, 🟡 Mid, 🔴 Worst)
   const metricStatus = useMemo(() => {

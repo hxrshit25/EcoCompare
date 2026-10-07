@@ -29,6 +29,9 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
   className = '',
   aspectRatio = 'landscape'
 }) => {
+  const [imageFailed, setImageFailed] = React.useState(false);
+  const validImageUrl = !imageFailed && Boolean((product.imageUrl || product.image)?.trim());
+
   const aspectClass = 
     aspectRatio === 'square' ? 'aspect-square' :
     aspectRatio === 'wide' ? 'aspect-[16/9]' : 'aspect-[16/10]';
@@ -724,9 +727,19 @@ export const ProductVisual: React.FC<ProductVisualProps> = ({
         {product.subcategory || product.category}
       </div>
 
-      {/* Primary Bespoke Studio Vector Render */}
+      {/* Primary Bespoke Studio Vector Render or Image with Fallback */}
       <div className="relative z-10 w-full h-full flex items-center justify-center transform transition-transform duration-300 ease-out group-hover:scale-105">
-        {renderProductGraphic()}
+        {validImageUrl ? (
+          <img
+            src={(product.imageUrl || product.image)!}
+            alt={product.name}
+            onError={() => setImageFailed(true)}
+            className="w-full h-full object-contain p-3 drop-shadow-md"
+            loading="lazy"
+          />
+        ) : (
+          renderProductGraphic()
+        )}
       </div>
 
       {/* Studio Floor Reflection Grounding Line */}

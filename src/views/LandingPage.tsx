@@ -28,7 +28,7 @@ import {
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
-  const { products, setActiveView, setSearchQuery, addToCompare, clearCompare } = useApp();
+  const { products, setActiveView, setSearchQuery, addToCompare, clearCompare, setSelectedCategory } = useApp();
   
   // Interactive Hero comparison selection state
   const [slot1, setSlot1] = useState('Stainless Steel Water Bottle');
@@ -71,6 +71,7 @@ export const LandingPage: React.FC = () => {
   };
 
   const handleCategoryClick = (categoryName: ProductCategory) => {
+    setSelectedCategory(categoryName);
     setSearchQuery('');
     setActiveView('explore');
   };

@@ -18,10 +18,17 @@ import {
 } from 'lucide-react';
 
 export const ExploreView: React.FC = () => {
-  const { products, compareIds, setActiveView, searchQuery, setSearchQuery } = useApp();
+  const { 
+    products, 
+    compareIds, 
+    setActiveView, 
+    searchQuery, 
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory
+  } = useApp();
 
   const [localSearch, setLocalSearch] = useState(searchQuery);
-  const [selectedCategory, setSelectedCategory] = useState<ProductCategory | 'All'>('All');
   const [selectedBrand, setSelectedBrand] = useState<string>('All');
   const [minScore, setMinScore] = useState<number>(0);
   const [maxPrice, setMaxPrice] = useState<number>(350000);
@@ -30,6 +37,11 @@ export const ExploreView: React.FC = () => {
   const [selectedCert, setSelectedCert] = useState<string>('All');
   const [sortBy, setSortBy] = useState<'greenScore' | 'lowestCarbon' | 'carbonDelta' | 'priceLow' | 'priceHigh' | 'lifespan' | 'recyclability'>('greenScore');
   const [showFilters, setShowFilters] = useState(false);
+
+  // Synchronize local search input when global search query changes
+  React.useEffect(() => {
+    setLocalSearch(searchQuery);
+  }, [searchQuery]);
 
   const categories: (ProductCategory | 'All')[] = [
     'All',

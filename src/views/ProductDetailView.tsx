@@ -36,6 +36,23 @@ export const ProductDetailView: React.FC = () => {
     setActiveView 
   } = useApp();
 
+  // Escape key listener & body scroll lock
+  React.useEffect(() => {
+    if (!selectedProduct) return;
+    document.body.style.overflow = 'hidden';
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        setSelectedProduct(null);
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [selectedProduct, setSelectedProduct]);
+
   if (!selectedProduct) return null;
 
   const product = selectedProduct;
@@ -68,7 +85,10 @@ export const ProductDetailView: React.FC = () => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-xs overflow-y-auto">
+    <div 
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-5 bg-black/60 backdrop-blur-xs overflow-y-auto"
+      onClick={() => setSelectedProduct(null)}
+    >
       <div 
         className="relative w-full max-w-4xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-3xl shadow-2xl overflow-hidden my-auto max-h-[92vh] flex flex-col"
         onClick={(e) => e.stopPropagation()}
